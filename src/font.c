@@ -29,13 +29,9 @@ typedef struct {
 #define GET_FONT(fontXID) ((TTF_Font*) GET_XID_VALUE(fontXID))
 #define FONT_SIZE 12
 
-// This Array contains a list of default font search paths for the compiled architecture
+// Only search for fonts in the folder fonts
 static const char* DEFAULT_FONT_SEARCH_PATHS[] = {
-#ifdef __ANDROID__
-        "/system/fonts"
-#else
-        "fonts"
-#endif /* __ANDROID__ */
+    "fonts"
 };
 
 // This are the custom search paths for fonts can be set via XSetFontPath.
@@ -169,17 +165,20 @@ Bool updateFontCache() {
     return True;
 }
 
+
 Bool initFontStorage() {
     size_t fontCount = 0;
     DIR* fontDirectory;
     struct dirent* entry;
     fontSearchPaths = malloc(sizeof(Array));
+
     if (fontSearchPaths == NULL) {
         return False;
     }
     if (!initArray(fontSearchPaths, ARRAY_LENGTH(DEFAULT_FONT_SEARCH_PATHS))) {
         return False;
     }
+
     for (size_t i = 0; i < ARRAY_LENGTH(DEFAULT_FONT_SEARCH_PATHS); i++) {
         const char *path = DEFAULT_FONT_SEARCH_PATHS[i];
         if (checkFontPath(path)) {
@@ -197,6 +196,7 @@ Bool initFontStorage() {
             closedir(fontDirectory);
         }
     }
+
     fontCache = malloc(sizeof(Array));
     if (fontCache == NULL) {
         return False;
@@ -232,7 +232,6 @@ void freeFontStorage() {
 }
 
 Font XLoadFont(Display* display, _Xconst char* name) {
-    // https://tronche.com/gui/x/xlib/graphics/font-metrics/XLoadFont.html
     SET_X_SERVER_REQUEST(display, X_OpenFont);
     XID font = ALLOC_XID();
     if (font == None) {
@@ -241,20 +240,17 @@ Font XLoadFont(Display* display, _Xconst char* name) {
     }
     SET_XID_TYPE(font, FONT);
     int fontSize = FONT_SIZE;
-    // TODO: Remove static font size
-    // TODO: Handle "fixed" and "cursor" and others alike right.
     const char* fontPath = NULL;
     if (strcmp(name, "fixed") == 0 || strcmp(name, "cursor") == 0) {
-        // This seems to be a common monospace font on most Android devices.
-        //fontPath = "/system/fonts/DroidSansMono.ttf";
-
-        fontPath = "/usr/share/fonts/truetype/freefont/FreeMono.ttf";
+        // Update the hardcoded path to match your local directory structure
+        fontPath = "fonts/FreeMono.ttf";
     } else {
         ssize_t index = findInArrayCmp(fontCache, (void *) name, &fontCmp);
         if (index != -1) {
             fontPath = ((FontCacheEntry*) fontCache->array[index])->filePath;
         }
     }
+
     if (fontPath == NULL) {
         FREE_XID(font);
         LOG("Font %s not found in cache!\n", name);
