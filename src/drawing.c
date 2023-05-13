@@ -206,6 +206,9 @@ int XCopyPlane(Display *display, Drawable src, Drawable dest, GC gc, int src_x, 
     return 1;
 }
 
+
+
+
 int XDrawLines(Display *display, Drawable d, GC gc, XPoint *points, int npoints, int mode) {
     // https://tronche.com/gui/x/xlib/graphics/drawing/XDrawLines.html
     SET_X_SERVER_REQUEST(display, X_PolyLine);

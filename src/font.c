@@ -34,7 +34,7 @@ static const char* DEFAULT_FONT_SEARCH_PATHS[] = {
 #ifdef __ANDROID__
         "/system/fonts"
 #else
-        "/usr/share/fonts/truetype/freefont"
+        "fonts"
 #endif /* __ANDROID__ */
 };
 

@@ -406,6 +406,12 @@ char* XGetIMValues(XIM inputMethod, ...) {
     return key;
 }
 
+char* XSetIMValues(XIM inputMethod, ...) {
+    // https://www.x.org/archive/X11R7.6/doc/man/man3/XSetIMValues.3.xhtml
+    WARN_UNIMPLEMENTED;
+    return NULL;
+}
+
 void XFreeFontSet(Display *display, XFontSet font_set) {
     // http://www.x.org/archive/X11R7.6/doc/man/man3/XCreateFontSet.3.xhtml
 //    SET_X_SERVER_REQUEST(display, XCB_);
@@ -423,6 +429,7 @@ XFontSet XCreateFontSet(Display *display, _Xconst char *base_font_name_list,
     // http://www.x.org/archive/X11R7.6/doc/man/man3/XCreateFontSet.3.xhtml
 //    SET_X_SERVER_REQUEST(display, XCB_);
     WARN_UNIMPLEMENTED;
+    return NULL;
 }
 
 int Xutf8LookupString(XIC inputConnection, XKeyPressedEvent* event, char* buffer_return,
@@ -459,4 +466,17 @@ int Xutf8LookupString(XIC inputConnection, XKeyPressedEvent* event, char* buffer
         *keysym_return = XKeycodeToKeysym(event->display, event->keycode, 0);
         return 1;
     }
+}
+
+Bool XRegisterIMInstantiateCallback(Display* display, struct _XrmHashBucketRec* rdb, char* resName,
+        char* resClass, XIDProc	callback, XPointer callbackData) {
+    // https://linux.die.net/man/3/xregisteriminstantiatecallback
+    WARN_UNIMPLEMENTED;
+    return False;
+}
+Bool XUnregisterIMInstantiateCallback(Display* display, struct _XrmHashBucketRec* rdb,
+        char* resName, char* resClass, XIDProc	callback, XPointer callbackData) {
+    // https://linux.die.net/man/3/xunregisteriminstantiatecallback
+    WARN_UNIMPLEMENTED;
+    return False;
 }

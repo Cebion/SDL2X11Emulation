@@ -48,6 +48,12 @@ int XCloseDisplay(Display* display) {
     if (numDisplaysOpen > 0) {
         numDisplaysOpen--;
     }
+	int screenIndex;
+	for (screenIndex = 0; screenIndex < display->nscreens; screenIndex++) {
+		Screen* screen = &display->screens[screenIndex];
+		XFreeGC(display, screen->default_gc);
+	}
+
     if (GET_DISPLAY(display)->nscreens > 0) {
         free(GET_DISPLAY(display)->screens);
     }
