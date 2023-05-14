@@ -39,20 +39,21 @@ Bool isValidAtom(Atom atom) {
     return getAtomStruct(atom) != NULL;
 }
 
-char* getAtomName(Atom atom) {
-    if (atom <= _NET_LAST_PREDEFINED) {
-        int i;
-        for (i = 0; i < PREDEFINED_ATOM_LIST_SIZE; i++) {
-            if (PredefinedAtomList[i].atom == atom) {
-                return (char*) PredefinedAtomList[i].name;
+const char* getAtomName(Display* display, Atom atom) {
+    int i;
+    for (i = 0; i < PREDEFINED_ATOM_LIST_SIZE; i++) {
+        if (PredefinedAtomList[i].atom == atom) {
+            const char* atomName = PredefinedAtomList[i].name;
+            if (strncmp(atomName, "XA_", 3) == 0) {
+                return &atomName[3];
+            } else if (strncmp(atomName, "NET_", 4) == 0) {
+                return &atomName[4];
+            } else {
+                return atomName;
             }
         }
     }
-    AtomStruct* atomStruct = getAtomStruct(atom);
-    if (atomStruct == NULL) {
-        return NULL;
-    }
-    return (char *) atomStruct->name;
+    return XGetAtomName(display, atom);
 }
 
 void freeAtomStorage() {
@@ -67,12 +68,12 @@ void freeAtomStorage() {
 char* XGetAtomName(Display* display, Atom atom) {
     // https://tronche.com/gui/x/xlib/window-information/XGetAtomName.html
     SET_X_SERVER_REQUEST(display, X_GetAtomName);
-    char* atomName = getAtomName(atom);
+    const char* atomName = getAtomName(display, atom);
     if (atomName == NULL) {
         handleError(0, display, None, 0, BadAtom, 0);
         return NULL;
     }
-    return atomName;
+    return (char*)atomName; // cast to match the return type
 }
 
 Status XGetAtomNames(Display *dpy, Atom *atoms, int count, char **names_return) {

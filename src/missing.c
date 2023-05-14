@@ -39,12 +39,6 @@ int XClearWindow ( Display* dpy, Window w) { return XClearArea(dpy, w, 0, 0, 0, 
 
 long XMaxRequestSize(Display *dpy) { LOG("CALL XMaxRequestSize\n");  return 0; }
 
-int XDisplayKeycodes(Display *dpy, int *min_keycode_return, int *max_keycode_return) {
-	*min_keycode_return = dpy->min_keycode;
-    *max_keycode_return = dpy->max_keycode;
-    return 1;
-}
-
 long XExtendedMaxRequestSize(Display *dpy) { LOG("CALL XExtendedMaxRequestSize\n");  return 0; }
 
 Status XAllocColorCells( register Display *dpy, Colormap cmap, Bool contig, unsigned long *masks, /* LISTofCARD32 */ /* RETURN */ unsigned int nplanes, /* CARD16 */ unsigned long *pixels, /* LISTofCARD32 */ /* RETURN */ unsigned int ncolors) /* CARD16 */ { LOG("CALL XAllocColorCells\n"); }
@@ -72,10 +66,6 @@ Bool XSupportsLocale(void) { LOG("CALL XSupportsLocale\n");  return False; }
 int XmbTextPropertyToTextList( Display *dpy, const XTextProperty *text_prop, char ***list_ret, int *count_ret) { LOG("CALL XmbTextPropertyToTextList\n");  return 0; }
 
 int XmbTextListToTextProperty( Display *dpy, char **list, int count, XICCEncodingStyle style, XTextProperty *text_prop) { LOG("CALL XmbTextListToTextProperty\n");  return 1; }
-
-Bool XRegisterIMInstantiateCallback( Display *display, XrmDatabase rdb, char *res_name, char *res_class, XIDProc callback, XPointer client_data) { LOG("CALL XRegisterIMInstantiateCallback\n");  return False; }
-
-Bool XUnregisterIMInstantiateCallback( Display *display, XrmDatabase rdb, char *res_name, char *res_class, XIDProc callback, XPointer client_data) { LOG("CALL XUnregisterIMInstantiateCallback\n");  return False; }
 
 int XSetClipRectangles ( register Display *dpy, GC gc, int clip_x_origin, int clip_y_origin, XRectangle *rectangles, int n, int ordering) { LOG("CALL XSetClipRectangles\n");  return 0; }
 
@@ -322,10 +312,6 @@ char *XDisplayName(_Xconst char* display) {
         return( d );
     return( (char *) "" );
 }
-
-char *
-XSetIMValues(XIM im, ...)
-{ LOG("CALL XSetIMValues\n"); }
 
 Display *
 XDisplayOfIM(XIM im)

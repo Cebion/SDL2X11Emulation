@@ -14,7 +14,7 @@ struct AtomStruct {
 
 Bool isValidAtom(Atom atom);
 Atom internalInternAtom(const char* atomName);
-char* getAtomName(Atom atom);
+const char* getAtomName(Display* display, Atom atom);
 void freeAtomStorage(void);
 
 #endif /* _ATOMS_H_ */
